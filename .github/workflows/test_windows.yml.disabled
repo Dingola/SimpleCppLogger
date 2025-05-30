@@ -1,0 +1,49 @@
+name: Test Windows
+
+#------------------------------------------------
+# Workflow Triggers
+#------------------------------------------------
+on:
+  workflow_run:
+    workflows: ["Build Windows"]
+    types:
+      - completed
+
+#------------------------------------------------
+# Environment Variables
+#------------------------------------------------
+env:
+  MAIN_PROJECT_NAME: ${{ github.event.repository.name }}
+  BUILD_TYPE: Debug
+  THIRD_PARTY_INCLUDE_DIR: ${{ github.workspace }}\\ThirdPartyDir
+
+#------------------------------------------------
+# Workflow jobs
+#------------------------------------------------
+jobs:
+  test-windows:
+    name: Test on Windows Latest
+    runs-on: windows-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout repository (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.PAT_TOKEN }}
+          path: build/
+
+      - name: Make test binary executable
+        run: |
+          icacls ".\build\CPP_Project_Tests\${{ env.BUILD_TYPE }}\${{ env.MAIN_PROJECT_NAME }}_Tests.exe" /grant "Everyone:(RX)"
+
+      - name: Run Tests
+        run: |
+          .\build\CPP_Project_Tests\${{ env.BUILD_TYPE }}\${{ env.MAIN_PROJECT_NAME }}_Tests.exe

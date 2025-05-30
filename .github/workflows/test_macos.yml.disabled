@@ -1,0 +1,48 @@
+name: Test macOS
+
+#------------------------------------------------
+# Workflow Triggers
+#------------------------------------------------
+on:
+  workflow_run:
+    workflows: ["Build macOS"]
+    types:
+      - completed
+
+#------------------------------------------------
+# Environment Variables
+#------------------------------------------------
+env:
+  MAIN_PROJECT_NAME: ${{ github.event.repository.name }}
+  BUILD_TYPE: Debug
+  THIRD_PARTY_INCLUDE_DIR: ${{ github.workspace }}/ThirdPartyDir
+
+#------------------------------------------------
+# Workflow jobs
+#------------------------------------------------
+jobs:
+  test-macos:
+    name: Test on macOS Latest
+    runs-on: macos-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout repository (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.PAT_TOKEN }}
+          path: build/
+
+      - name: Make test binary executable
+        run: chmod +x ./build/CPP_Project_Tests/${{ env.MAIN_PROJECT_NAME }}_Tests.app/Contents/MacOS/${{ env.MAIN_PROJECT_NAME }}_Tests
+
+      - name: Run Tests
+        run: |
+          ./build/CPP_Project_Tests/${{ env.MAIN_PROJECT_NAME }}_Tests.app/Contents/MacOS/${{ env.MAIN_PROJECT_NAME }}_Tests
