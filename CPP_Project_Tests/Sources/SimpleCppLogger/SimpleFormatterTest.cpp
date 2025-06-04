@@ -98,7 +98,8 @@ TEST_F(SimpleFormatterTest, ContainsFileLineFunction)
 }
 
 /**
- * @brief Tests that an unknown or out-of-range LogLevel is formatted as [Unknown  ]: and uses the reset color code.
+ * @brief Tests that an unknown or out-of-range LogLevel is formatted as [Unknown  ]: and uses the
+ * reset color code.
  */
 TEST_F(SimpleFormatterTest, UnknownLogLevelFormatsAsUnknown)
 {
@@ -140,19 +141,13 @@ TEST_F(SimpleFormatterTest, SpecialCharactersInMessage)
 TEST_F(SimpleFormatterTest, ColorCodesPresentForEachLevel)
 {
     SimpleFormatter formatter;
-    struct LevelColor
-    {
-        LogLevel level;
-        const char* color_code;
-    } level_colors[] = {
-        {LogLevel::Trace, "\033[96m"},
-        {LogLevel::Debug, "\033[92m"},
-        {LogLevel::Info, "\033[94m"},
-        {LogLevel::Warning, "\033[93m"},
-        {LogLevel::Error, "\033[91m"},
-        {LogLevel::Fatal, "\033[95m"}
-    };
-    for (const auto& lc : level_colors)
+    struct LevelColor {
+            LogLevel level;
+            const char* color_code;
+    } level_colors[] = {{LogLevel::Trace, "\033[96m"}, {LogLevel::Debug, "\033[92m"},
+                        {LogLevel::Info, "\033[94m"},  {LogLevel::Warning, "\033[93m"},
+                        {LogLevel::Error, "\033[91m"}, {LogLevel::Fatal, "\033[95m"}};
+    for (const auto& lc: level_colors)
     {
         LogMessage msg(lc.level, "Test");
         auto formatted = formatter.format(msg, std::source_location::current());
