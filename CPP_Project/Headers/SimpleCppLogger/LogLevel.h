@@ -4,6 +4,8 @@
 #include <optional>
 #include <string_view>
 
+#include "ApiMacro.h"
+
 /**
  * @file LogLevel.h
  * @brief Defines the LogLevel enumeration and provides string conversion utilities.
@@ -35,7 +37,7 @@ namespace SimpleCppLogger
  *
  * The order of the values defines their severity for comparison.
  */
-enum class LogLevel
+enum class SIMPLECPPLOGGER_API LogLevel
 {
 #define X(a, b, c) a,
     LOGLEVEL_LIST
@@ -89,7 +91,7 @@ constexpr inline std::size_t LogLevelCount = static_cast<std::size_t>(LogLevel::
  * @param level The log level.
  * @return The corresponding const char* string, or an empty string if out of range.
  */
-[[nodiscard]] constexpr inline const char* to_string(LogLevel level)
+[[nodiscard]] constexpr inline auto to_string(LogLevel level) -> const char*
 {
     auto index = static_cast<std::size_t>(level);
     return (index >= LogLevelCount) ? "" : LogLevelNamesA[index];
@@ -100,7 +102,7 @@ constexpr inline std::size_t LogLevelCount = static_cast<std::size_t>(LogLevel::
  * @param level The log level.
  * @return The corresponding const wchar_t* string, or an empty string if out of range.
  */
-[[nodiscard]] constexpr inline const wchar_t* to_wstring(LogLevel level)
+[[nodiscard]] constexpr inline auto to_wstring(LogLevel level) -> const wchar_t*
 {
     auto index = static_cast<std::size_t>(level);
     return (index >= LogLevelCount) ? L"" : LogLevelNamesW[index];
@@ -111,7 +113,7 @@ constexpr inline std::size_t LogLevelCount = static_cast<std::size_t>(LogLevel::
  * @param level The log level.
  * @return The corresponding std::string_view, or an empty view if out of range.
  */
-[[nodiscard]] constexpr inline std::string_view to_string_view(LogLevel level)
+[[nodiscard]] constexpr inline auto to_string_view(LogLevel level) -> std::string_view
 {
     auto index = static_cast<std::size_t>(level);
     return (index >= LogLevelCount) ? std::string_view{} : LogLevelNamesSv[index];
@@ -122,7 +124,7 @@ constexpr inline std::size_t LogLevelCount = static_cast<std::size_t>(LogLevel::
  * @param level The log level.
  * @return The corresponding std::wstring_view, or an empty view if out of range.
  */
-[[nodiscard]] constexpr inline std::wstring_view to_wstring_view(LogLevel level)
+[[nodiscard]] constexpr inline auto to_wstring_view(LogLevel level) -> std::wstring_view
 {
     auto index = static_cast<std::size_t>(level);
     return (index >= LogLevelCount) ? std::wstring_view{} : LogLevelNamesWsv[index];
@@ -133,7 +135,7 @@ constexpr inline std::size_t LogLevelCount = static_cast<std::size_t>(LogLevel::
  * @param sv The string view to parse.
  * @return The corresponding LogLevel, or std::nullopt if not found.
  */
-[[nodiscard]] constexpr inline std::optional<LogLevel> from_string_view(std::string_view sv)
+[[nodiscard]] constexpr inline auto from_string_view(std::string_view sv) -> std::optional<LogLevel>
 {
     std::size_t found = LogLevelCount;
 
@@ -154,7 +156,8 @@ constexpr inline std::size_t LogLevelCount = static_cast<std::size_t>(LogLevel::
  * @param sv The wide string view to parse.
  * @return The corresponding LogLevel, or std::nullopt if not found.
  */
-[[nodiscard]] constexpr inline std::optional<LogLevel> from_wstring_view(std::wstring_view sv)
+[[nodiscard]] constexpr inline auto from_wstring_view(std::wstring_view sv)
+    -> std::optional<LogLevel>
 {
     std::size_t found = LogLevelCount;
 
