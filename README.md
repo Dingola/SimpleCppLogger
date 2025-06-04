@@ -1,16 +1,16 @@
-# Cpp Template
+# Simple Cpp Logger
 
 ## 🚀 [Build Status]
 
 ### 🛠 Build and ✅ Test
 
-[![Linux Build and Test](https://github.com/Dingola/CppTemplate/actions/workflows/build_and_test_linux.yml/badge.svg)](https://github.com/Dingola/CppTemplate/actions/workflows/build_and_test_linux.yml)
-[![macOS Build and Test](https://github.com/Dingola/CppTemplate/actions/workflows/build_and_test_macos.yml/badge.svg)](https://github.com/Dingola/CppTemplate/actions/workflows/build_and_test_macos.yml)
-[![Windows Build and Test](https://github.com/Dingola/CppTemplate/actions/workflows/build_and_test_windows.yml/badge.svg)](https://github.com/Dingola/CppTemplate/actions/workflows/build_and_test_windows.yml)
+[![Linux Build and Test](https://github.com/Dingola/SimpleCppLogger/actions/workflows/build_and_test_linux.yml/badge.svg)](https://github.com/Dingola/SimpleCppLogger/actions/workflows/build_and_test_linux.yml)
+[![macOS Build and Test](https://github.com/Dingola/SimpleCppLogger/actions/workflows/build_and_test_macos.yml/badge.svg)](https://github.com/Dingola/SimpleCppLogger/actions/workflows/build_and_test_macos.yml)
+[![Windows Build and Test](https://github.com/Dingola/SimpleCppLogger/actions/workflows/build_and_test_windows.yml/badge.svg)](https://github.com/Dingola/SimpleCppLogger/actions/workflows/build_and_test_windows.yml)
 
 ### Code Coverage
 
-[![codecov](https://codecov.io/gh/Dingola/CppTemplate/graph/badge.svg?token=IUM73S6W22)](https://codecov.io/gh/Dingola/CppTemplate)
+[![codecov](https://codecov.io/gh/Dingola/SimpleCppLogger/graph/badge.svg?token=8U0P0GV3D5)](https://codecov.io/gh/Dingola/SimpleCppLogger)
 
 <br><br>
 
@@ -83,19 +83,20 @@ Once you have generated the required tokens, add them as secrets in your GitHub 
 
 | Graph     | Description                                                                                                                                                                                                                     | Visualization                                                                 |
 |-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| **Sunburst** | The inner-most circle represents the entire project. Moving outward are folders, and finally individual files. The size and color of each slice represent the number of statements and the coverage, respectively. | <img src="https://codecov.io/gh/Dingola/CppTemplate/graphs/sunburst.svg?token=IUM73S6W22" alt="Sunburst" height="100" width="200"> |
-| **Grid**     | Each block represents a single file in the project. The size and color of each block represent the number of statements and the coverage, respectively.                                                                      | <img src="https://codecov.io/gh/Dingola/CppTemplate/graphs/tree.svg?token=IUM73S6W22" alt="Grid" height="100" width="200">         |
-| **Icicle**   | The top section represents the entire project, followed by folders and individual files. The size and color of each slice represent the number of statements and the coverage, respectively.                                 | <img src="https://codecov.io/gh/Dingola/CppTemplate/graphs/icicle.svg?token=IUM73S6W22" alt="Icicle" height="150" width="400">     |
+| **Sunburst** | The inner-most circle represents the entire project. Moving outward are folders, and finally individual files. The size and color of each slice represent the number of statements and the coverage, respectively. | <img src="https://codecov.io/gh/Dingola/SimpleCppLogger/graphs/sunburst.svg?token=8U0P0GV3D5" alt="Sunburst" height="100" width="200"> |
+| **Grid**     | Each block represents a single file in the project. The size and color of each block represent the number of statements and the coverage, respectively.                                                                      | <img src="https://codecov.io/gh/Dingola/SimpleCppLogger/graphs/tree.svg?token=8U0P0GV3D5" alt="Grid" height="100" width="200">         |
+| **Icicle**   | The top section represents the entire project, followed by folders and individual files. The size and color of each slice represent the number of statements and the coverage, respectively.                                 | <img src="https://codecov.io/gh/Dingola/SimpleCppLogger/graphs/icicle.svg?token=8U0P0GV3D5" alt="Icicle" height="150" width="400">     |
 
 <br><br>
 
-
 ## [Description]
-This project is a template for creating C++-based applications. The solution is divided into two parts: the main project and a test project. 
-By default, only the main project is built. The test project can be built if desired, controlled by a CMake boolean variable `<PROJECT_NAME>_BUILD_TEST_PROJECT`. 
-Additionally, the CMake variable `<PROJECT_NAME>_BUILD_TARGET_TYPE` must be set to `static_library` for the test project to be executed.
+SimpleCppLogger is a lightweight C++20 library providing flexible and minimal logging functionality for modern C++ projects.
 
-The template allows for the generation of project documentation using Doxygen. It also includes GitHub workflows (CI builds) for Linux, macOS, and Windows.
+The solution is structured into two parts: the main library and an optional test suite.
+By default, only the main library is built. The test suite can be enabled via the CMake option SimpleCppLogger_BUILD_TEST_PROJECT.
+To run the test suite, the CMake variable SimpleCppLogger_BUILD_TARGET_TYPE must be set to static_library.
+
+The library supports automatic documentation generation using Doxygen and includes CI workflows for Linux, macOS, and Windows.
 <br><br>
 
 ## [Solution Folder Structure]
@@ -209,8 +210,8 @@ The template allows for the generation of project documentation using Doxygen. I
 
 ### 2) Setting up
 ```
-git clone https://github.com/Dingola/CppTemplate.git
-cd CppTemplate/
+git clone https://github.com/Dingola/SimpleCppLogger.git
+cd SimpleCppLogger/
 ```
 <br>
 
@@ -230,8 +231,8 @@ cmake --build . --config Release
 
 ### 4) Run the project
 ```
-cd CppTemplate/Release/
-./CppTemplate.exe
+cd SimpleCppLogger/Release/
+./SimpleCppLogger.exe
 ```
 <br>
 
@@ -258,29 +259,29 @@ To create an NSIS installer (Windows only), set `BUILD_NSIS_INSTALLER` to `true`
 #### 1. Build the Docker Image
 Build the Docker image using the following command:
 ```
-docker build -t cpptemplate-dockerimage .
+docker build -t simplecpplogger-dockerimage .
 ```
 <br>
 
 #### 2. Ways to Run the Docker Image
 - **Run directly:**
 ```
-docker run cpptemplate-dockerimage
+docker run simplecpplogger-dockerimage
 ```
 - **Start an interactive Bash shell:**
 ```
-docker run -it cpptemplate-dockerimage bash
+docker run -it simplecpplogger-dockerimage bash
 ```
 <br>
 
 #### 3. Run the App or Tests in the Container
 - **Start the app:**
 ```
-./_build_app_release/CPP_Project/CppTemplate
+./_build_app_release/CPP_Project/SimpleCppLogger
 ```
 - **Run the tests:**
 ```
-./_build_tests_release/CPP_Project_Tests/CppTemplate_Tests
+./_build_tests_release/CPP_Project_Tests/SimpleCppLogger_Tests
 ```
 <br><br><br>
 
