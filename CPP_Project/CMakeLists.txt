@@ -147,6 +147,7 @@ else()
 endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/Doxygen.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/CommonLib.cmake)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${MAIN_PROJECT_NAME})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
