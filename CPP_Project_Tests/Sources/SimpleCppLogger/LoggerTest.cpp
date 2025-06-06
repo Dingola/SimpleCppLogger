@@ -222,6 +222,8 @@ TEST_F(LoggerTest, LogAfterClearAppenders)
 TEST_F(LoggerTest, LogAfterAppenderDestruction)
 {
     auto temp_appender = std::make_shared<MockLogAppender>();
+    ON_CALL(*temp_appender, internal_append(::testing::_, ::testing::_))
+        .WillByDefault(::testing::Return());
     Logger::get_instance().add_appender(temp_appender);
     temp_appender.reset();
 
