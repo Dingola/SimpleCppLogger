@@ -48,7 +48,7 @@ TEST_F(LoggerTest, LogMessageIsAppended)
             EXPECT_STREQ(location.file_name(), __FILE__);
         });
 
-    Logger::get_instance().log(LogLevel::Info, "Test message");
+    Logger::get_instance().log(LogLevel::Info, "Test message", std::source_location::current());
 }
 
 /**
@@ -101,7 +101,7 @@ TEST_F(LoggerTest, LogMessageIncludesSourceLocation)
             EXPECT_GT(location.line(), 0u);
         });
 
-    Logger::get_instance().log(LogLevel::Info, "Location test");
+    Logger::get_instance().log(LogLevel::Info, "Location test", std::source_location::current());
 }
 
 /**
