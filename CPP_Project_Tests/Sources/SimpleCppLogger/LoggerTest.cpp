@@ -1,5 +1,9 @@
 #include "SimpleCppLogger/LoggerTest.h"
 
+#include <atomic>
+#include <thread>
+#include <vector>
+
 using namespace SimpleCppLogger;
 
 /**
