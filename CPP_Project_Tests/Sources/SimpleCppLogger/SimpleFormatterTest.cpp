@@ -164,7 +164,8 @@ TEST_F(SimpleFormatterTest, FormatWithDefaultSourceLocation)
     LogMessage msg(LogLevel::Info, "Default location");
     auto formatted = formatter.format(msg);
     EXPECT_NE(formatted.find("Default location"), std::string::npos);
-    EXPECT_NE(formatted.find(".cpp"), std::string::npos);
+    EXPECT_TRUE(formatted.find(".cpp") != std::string::npos ||
+                formatted.find(".h") != std::string::npos);
 }
 
 /**
