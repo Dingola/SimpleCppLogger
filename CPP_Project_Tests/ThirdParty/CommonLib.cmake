@@ -6,7 +6,7 @@ set(Third_Party_Target_Directory "${THIRD_PARTY_INCLUDE_DIR}/${Project_Directory
 set(CMakeArgs "-D ${Third_Party_Target}_BUILD_TARGET_TYPE:STRING=static_library -D MAIN_PROJECT_NAME:STRING=CommonLib")
 set(CommonLib_INCLUDE_DIR ${Third_Party_Target_Directory}/${Third_Party_Target}_install/include)
 set(CommonLib_LIBRARY ${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/CommonLib.lib)
-set(CommonLib_DIR "")
+set(CommonLib_DIR "${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/cmake/CommonLib")
 
 find_package(CommonLib HINTS ${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/cmake/CommonLib NO_DEFAULT_PATHS)
 
