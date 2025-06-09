@@ -27,4 +27,4 @@ else()
 	find_package(CommonLib REQUIRED HINTS ${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/cmake/CommonLib NO_DEFAULT_PATHS)
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE CommonLib)
+target_link_libraries(${PROJECT_NAME} PUBLIC CommonLib)
