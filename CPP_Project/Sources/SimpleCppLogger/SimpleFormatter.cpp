@@ -3,6 +3,7 @@
  * @brief This file contains the implementation of the SimpleFormatter class.
  */
 
+#include "CommonLib/Utils/DateTimeUtils.h"
 #include "SimpleCppLogger/SimpleFormatter.h"
 
 #include <chrono>
@@ -14,24 +15,6 @@
 
 namespace SimpleCppLogger
 {
-
-namespace
-{
-inline std::string get_current_datetime()
-{
-    auto now = std::chrono::system_clock::now();
-    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-    std::tm tm_buf;
-#if defined(_WIN32)
-    localtime_s(&tm_buf, &now_c);
-#else
-    localtime_r(&now_c, &tm_buf);
-#endif
-    std::ostringstream oss;
-    oss << std::put_time(&tm_buf, "%Y-%m-%d %H:%M:%S");
-    return oss.str();
-}
-}  // namespace
 
 auto SimpleFormatter::format(const LogMessage& log_message,
                              const std::source_location& location) const -> std::string
@@ -75,7 +58,7 @@ auto SimpleFormatter::format(const LogMessage& log_message,
     const std::string context_color_code = "\033[95m";  // Light Purple
 
     std::ostringstream oss;
-    oss << color_code << msg_type << reset_code << " " << get_current_datetime() << " "
+    oss << color_code << msg_type << reset_code << " " << CommonLib::DateTimeUtils::now() << " "
         << log_message.get_message() << " - " << context_color_code << location.file_name()
         << reset_code << ":" << context_color_code << location.line() << reset_code << ", "
         << context_color_code << location.function_name() << reset_code;
