@@ -43,6 +43,24 @@ class SIMPLECPPLOGGER_API Logger: public CommonLib::Singleton<Logger>
                  const std::source_location& location = std::source_location::current()) -> void;
 
         /**
+         * @brief Convenience overload to log with explicit context (file, line, function,
+         * category).
+         *
+         * Appends the provided context to the message and forwards to the main log() with a
+         * default-constructed std::source_location to avoid stamping the caller (e.g. adapter)
+         * location.
+         *
+         * @param level The severity level of the log message.
+         * @param message The log message content.
+         * @param file Optional source file path (may be nullptr or empty).
+         * @param line Optional source line number (<= 0 if unknown).
+         * @param function Optional function signature (may be nullptr or empty).
+         * @param category Optional logging category (may be nullptr or empty).
+         */
+        auto log(LogLevel level, const std::string& message, const char* file, int line,
+                 const char* function, const char* category = nullptr) -> void;
+
+        /**
          * @brief Adds a log appender to the logger.
          * @param appender The log appender to add.
          */

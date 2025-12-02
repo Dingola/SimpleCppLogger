@@ -92,6 +92,54 @@ auto Logger::log(LogLevel level, const std::string& message,
     m_impl->log(level, message, location);
 }
 
+auto Logger::log(LogLevel level, const std::string& message, const char* file, int line,
+                 const char* function, const char* category) -> void
+{
+    std::string composed = message;
+
+    const bool has_category = (category != nullptr && category[0] != '\0');
+    const bool has_file = (file != nullptr && file[0] != '\0');
+    const bool has_function = (function != nullptr && function[0] != '\0');
+    const bool has_line = (line > 0);
+
+    if (has_category || has_file || has_function || has_line)
+    {
+        composed += " - ";
+        if (has_category)
+        {
+            composed += "[";
+            composed += category;
+            composed += "] ";
+        }
+
+        if (has_file)
+        {
+            composed += file;
+            if (has_line)
+            {
+                composed += ":";
+                composed += std::to_string(line);
+            }
+        }
+        else if (has_line)
+        {
+            composed += ":";
+            composed += std::to_string(line);
+        }
+
+        if (has_function)
+        {
+            if (has_file || has_line)
+            {
+                composed += ", ";
+            }
+            composed += function;
+        }
+    }
+
+    log(level, composed, std::source_location{});
+}
+
 auto Logger::add_appender(const std::shared_ptr<LogAppender>& appender) -> void
 {
     m_impl->add_appender(appender);

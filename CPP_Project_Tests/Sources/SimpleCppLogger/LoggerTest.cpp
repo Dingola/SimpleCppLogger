@@ -253,3 +253,73 @@ TEST_F(LoggerTest, SourceLocationFromDifferentFunction)
 {
     helper_func_for_source_location_test(m_mock_appender.get());
 }
+
+/**
+ * @brief Tests the explicit-context overload composes message and does not stamp caller location.
+ */
+TEST_F(LoggerTest, LogWithExplicitContext_ComposesAndSuppressesSourceLocation)
+{
+    const char* file = "C:/path/to/file.cpp";
+    const int line = 42;
+    const char* function = "my_func";
+    const char* category = "NET";
+    const std::string base_message = "Base";
+
+    const std::string expected = std::string("Base - ") + "[" + category + "] " + file + ":" +
+                                 std::to_string(line) + ", " + function;
+
+    EXPECT_CALL(*m_mock_appender, internal_append(::testing::_, ::testing::_))
+        .WillOnce([&](const LogMessage& msg, const std::source_location& loc) {
+            EXPECT_EQ(msg.get_level(), LogLevel::Info);
+            EXPECT_EQ(msg.get_message(), expected);
+
+            // Forwarded location should be default-constructed (no caller information).
+            EXPECT_EQ(loc.line(), 0u);
+            EXPECT_TRUE(std::string(loc.file_name()).empty());
+            EXPECT_TRUE(std::string(loc.function_name()).empty());
+        });
+
+    Logger::get_instance().log(LogLevel::Info, base_message, file, line, function, category);
+}
+
+/**
+ * @brief Tests explicit-context overload with category only.
+ */
+TEST_F(LoggerTest, LogWithExplicitContext_CategoryOnly)
+{
+    const std::string expected = "Msg - [Subsystem] ";
+
+    EXPECT_CALL(*m_mock_appender, internal_append(::testing::_, ::testing::_))
+        .WillOnce([&](const LogMessage& msg, const std::source_location& loc) {
+            EXPECT_EQ(msg.get_message(), expected);
+            EXPECT_EQ(loc.line(), 0u);
+        });
+
+    Logger::get_instance().log(LogLevel::Info, "Msg", nullptr, 0, nullptr, "Subsystem");
+}
+
+/**
+ * @brief Tests explicit-context overload with function only.
+ */
+TEST_F(LoggerTest, LogWithExplicitContext_FunctionOnly)
+{
+    const std::string expected = "Msg - myFunc";
+
+    EXPECT_CALL(*m_mock_appender, internal_append(::testing::_, ::testing::_))
+        .WillOnce([&](const LogMessage& msg, const std::source_location& loc) {
+            EXPECT_EQ(msg.get_message(), expected);
+            EXPECT_EQ(loc.line(), 0u);
+        });
+
+    Logger::get_instance().log(LogLevel::Info, "Msg", nullptr, 0, "myFunc", nullptr);
+}
+
+/**
+ * @brief Tests that invalid level with explicit context is ignored.
+ */
+TEST_F(LoggerTest, LogWithExplicitContext_InvalidLevelFiltered)
+{
+    EXPECT_CALL(*m_mock_appender, internal_append(::testing::_, ::testing::_)).Times(0);
+
+    Logger::get_instance().log(static_cast<LogLevel>(-1), "X", "f.cpp", 1, "fn", "cat");
+}

@@ -3,7 +3,6 @@
  * @brief This file contains the implementation of the SimpleFormatter class.
  */
 
-#include "CommonLib/Utils/DateTimeUtils.h"
 #include "SimpleCppLogger/SimpleFormatter.h"
 
 #include <chrono>
@@ -11,6 +10,7 @@
 #include <iomanip>
 #include <sstream>
 
+#include "CommonLib/Utils/DateTimeUtils.h"
 #include "SimpleCppLogger/LogLevel.h"
 
 namespace SimpleCppLogger
@@ -57,11 +57,40 @@ auto SimpleFormatter::format(const LogMessage& log_message,
     const std::string reset_code = "\033[0m";
     const std::string context_color_code = "\033[95m";  // Light Purple
 
+    const bool has_file = location.file_name()[0] != '\0';
+    const bool has_function = location.function_name()[0] != '\0';
+    const bool has_line = location.line() > 0;
+    const bool has_any_location = has_file || has_function || has_line;
+
     std::ostringstream oss;
     oss << color_code << msg_type << reset_code << " " << CommonLib::DateTimeUtils::now() << " "
-        << log_message.get_message() << " - " << context_color_code << location.file_name()
-        << reset_code << ":" << context_color_code << location.line() << reset_code << ", "
-        << context_color_code << location.function_name() << reset_code;
+        << log_message.get_message();
+
+    if (has_any_location)
+    {
+        oss << " - ";
+        if (has_file)
+        {
+            oss << context_color_code << location.file_name() << reset_code;
+            if (has_line)
+            {
+                oss << ":" << context_color_code << location.line() << reset_code;
+            }
+        }
+        else if (has_line)
+        {
+            oss << ":" << context_color_code << location.line() << reset_code;
+        }
+
+        if (has_function)
+        {
+            if (has_file || has_line)
+            {
+                oss << ", ";
+            }
+            oss << context_color_code << location.function_name() << reset_code;
+        }
+    }
 
     return oss.str();
 }
