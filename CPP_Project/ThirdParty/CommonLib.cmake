@@ -1,14 +1,15 @@
 # CommonLib Integration
-set(Third_Party_Target "CommonLib")
-set(Git_Tag "main")
-set(Project_Directory_Name "${Third_Party_Target}_${Git_Tag}")
-set(Third_Party_Target_Directory "${THIRD_PARTY_INCLUDE_DIR}/${Project_Directory_Name}")
-set(CMakeArgs "-D ${Third_Party_Target}_BUILD_TARGET_TYPE:STRING=static_library -D MAIN_PROJECT_NAME:STRING=CommonLib")
-set(CommonLib_INCLUDE_DIR ${Third_Party_Target_Directory}/${Third_Party_Target}_install/include)
-set(CommonLib_LIBRARY ${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/CommonLib.lib)
-set(CommonLib_DIR "${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/cmake/CommonLib")
+set(THIRD_PARTY_TARGET "CommonLib")
+set(GIT_TAG "main")
+set(PROJECT_DIR_NAME "${THIRD_PARTY_TARGET}_${GIT_TAG}")
+set(THIRD_PARTY_TARGET_DIR "${THIRD_PARTY_INCLUDE_DIR}/${PROJECT_DIR_NAME}")
+set(CMAKE_ARGS "-D ${THIRD_PARTY_TARGET}_BUILD_TARGET_TYPE:STRING=static_library -D MAIN_PROJECT_NAME:STRING=CommonLib")
+set(CommonLib_INSTALL_ROOT "${THIRD_PARTY_TARGET_DIR}/${THIRD_PARTY_TARGET}_install")
+set(CommonLib_INCLUDE_DIR "${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/include")
+set(CommonLib_LIBRARY     "${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/lib/CommonLib.lib")
+set(CommonLib_DIR "${CommonLib_INSTALL_ROOT}/lib/cmake/CommonLib")
 
-find_package(CommonLib HINTS ${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/cmake/CommonLib NO_DEFAULT_PATHS)
+find_package(CommonLib HINTS ${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/lib/cmake/CommonLib NO_DEFAULT_PATHS)
 
 if(CommonLib_FOUND)
     message("CommonLib found")
@@ -16,15 +17,15 @@ else()
     message("CommonLib not found. Downloading and invoking cmake ..")
     build_third_party_project(
         false
-        ${Third_Party_Target}
+        ${THIRD_PARTY_TARGET}
         https://github.com/Dingola/CommonLib.git
-        ${Git_Tag}
-        ${Third_Party_Target_Directory}
+        ${GIT_TAG}
+        ${THIRD_PARTY_TARGET_DIR}
         ${CMAKE_BUILD_TYPE}
-		${CMakeArgs}
+		${CMAKE_ARGS}
     )
 	
-	find_package(CommonLib REQUIRED HINTS ${Third_Party_Target_Directory}/${Third_Party_Target}_install/lib/cmake/CommonLib NO_DEFAULT_PATHS)
+	find_package(CommonLib REQUIRED HINTS ${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/lib/cmake/CommonLib NO_DEFAULT_PATHS)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC CommonLib)

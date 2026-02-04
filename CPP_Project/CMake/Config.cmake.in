@@ -3,7 +3,7 @@
 include(CMakeFindDependencyMacro)
 
 set(CommonLib_DIR "@COMMONLIB_DIR@")
-find_dependency(CommonLib)
+find_dependency(CommonLib REQUIRED)
 
 include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@.cmake)
 

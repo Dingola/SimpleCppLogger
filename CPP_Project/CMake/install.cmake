@@ -1,8 +1,5 @@
 include(GNUInstallDirs)
 
-set(COMMONLIB_GIT_TAG "main")
-set(COMMONLIB_DIR "${THIRD_PARTY_INCLUDE_DIR}/CommonLib_${COMMONLIB_GIT_TAG}/CommonLib_install/lib/cmake/CommonLib")
-
 # Check if the target is a MACOSX_BUNDLE
 if(APPLE AND ${PROJECT_NAME}_IS_BUNDLE)
     set(BUNDLE_DESTINATION "Applications")
