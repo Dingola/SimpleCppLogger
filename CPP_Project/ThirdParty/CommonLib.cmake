@@ -9,6 +9,11 @@ set(CommonLib_INCLUDE_DIR "${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/include
 set(CommonLib_LIBRARY     "${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/lib/CommonLib.lib")
 set(CommonLib_DIR "${CommonLib_INSTALL_ROOT}/lib/cmake/CommonLib")
 
+list(APPEND CMAKE_PREFIX_PATH
+    "${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}"
+    "${CommonLib_INSTALL_ROOT}"
+)
+
 find_package(CommonLib HINTS ${CommonLib_INSTALL_ROOT}/${CMAKE_BUILD_TYPE}/lib/cmake/CommonLib NO_DEFAULT_PATHS)
 
 if(CommonLib_FOUND)
